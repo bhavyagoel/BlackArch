@@ -1,0 +1,14 @@
+ dpkg-buildpackage -d -us -uc -ui
+dpkg-buildpackage: info: source package core-utils
+dpkg-buildpackage: info: source version 0.1-1
+dpkg-buildpackage: info: source distribution UNRELEASED
+dpkg-buildpackage: info: source changed by bhavyagoel <bhavyagoel@unknown>
+ dpkg-source --before-build .
+dpkg-buildpackage: info: host architecture amd64
+ debian/rules clean
+dh clean
+dh: error: unable to load addon autoreconf: Can't locate Debian/Debhelper/Sequence/autoreconf.pm in @INC (you may need to install the Debian::Debhelper::Sequence::autoreconf module) (@INC contains: /usr/lib/perl5/5.34/site_perl /usr/share/perl5/site_perl /usr/lib/perl5/5.34/vendor_perl /usr/share/perl5/vendor_perl /usr/lib/perl5/5.34/core_perl /usr/share/perl5/core_perl) at (eval 15) line 1.
+BEGIN failed--compilation aborted at (eval 15) line 1.
+
+make: *** [debian/rules:18: clean] Error 25
+dpkg-buildpackage: error: debian/rules clean subprocess returned exit status 2

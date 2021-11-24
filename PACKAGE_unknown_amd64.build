@@ -1,0 +1,6 @@
+ dpkg-buildpackage -us -uc -ui
+dpkg-buildpackage: warning:     debian/changelog(l1): version 'VERSION' is invalid: version number does not start with digit
+LINE: PACKAGE (VERSION) UNRELEASED; urgency=low
+dpkg-buildpackage: error: version number does not start with digit
+dpkg-buildpackage: info: source package PACKAGE
+dpkg-buildpackage: info: source version unknown

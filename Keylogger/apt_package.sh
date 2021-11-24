@@ -29,4 +29,4 @@ rm debian/*.ex
 
 # Build the package.
 # You  will get a lot of warnings and ../somescripts_0.1-1_i386.deb
-debuild
+debuild -d --check-dirname-level 0 -us -uc

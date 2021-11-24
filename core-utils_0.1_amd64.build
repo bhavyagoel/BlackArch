@@ -1,0 +1,12 @@
+ dpkg-buildpackage -d -us -uc -ui
+dpkg-buildpackage: info: source package core-utils
+dpkg-buildpackage: info: source version 0.1
+dpkg-buildpackage: info: source distribution unstable
+dpkg-buildpackage: info: source changed by bhavyagoel <bgoel413@gmail.com>
+ dpkg-source --before-build .
+dpkg-buildpackage: info: host architecture amd64
+ fakeroot debian/rules clean
+dh clean
+dh: error: Please specify the compatibility level in debian/compat
+make: *** [debian/rules:3: clean] Error 25
+dpkg-buildpackage: error: fakeroot debian/rules clean subprocess returned exit status 2

@@ -1,0 +1,9 @@
+ dpkg-buildpackage -us -uc -ui
+dpkg-buildpackage: info: source package PACKAGE
+dpkg-buildpackage: info: source version 0.1
+dpkg-buildpackage: info: source distribution UNRELEASED
+dpkg-buildpackage: info: source changed by bhavyagoel <bgoel413@gmail.com>
+ dpkg-source --before-build .
+dpkg-buildpackage: info: host architecture amd64
+dpkg-source: error: source package name 'PACKAGE' is illegal: character 'P' not allowed
+dpkg-buildpackage: error: dpkg-source --before-build . subprocess returned exit status 25
