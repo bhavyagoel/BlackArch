@@ -78,7 +78,6 @@ KEYLOGGER() {
     done
 }
 
-
 # FTP Server
 FTP_SERVER() {
     echo "Starting ftp server.."
