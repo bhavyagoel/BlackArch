@@ -1,0 +1,5 @@
+core-utils (0.1-1) UNRELEASED; urgency=medium
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- bhavyagoel <bhavyagoel@unknown>  Wed, 24 Nov 2021 18:10:51 +0530
