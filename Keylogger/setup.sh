@@ -32,6 +32,7 @@ INSTALL() {
     
     apt install -y npm nodejs
     npm install -g localtunnel
+    logkeys --export-keymap en.us 
 }
 
 if ! command -v logkeys >/dev/null 2>&1
