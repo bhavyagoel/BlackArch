@@ -19,7 +19,7 @@ INSTALL() {
     echo "Installing.."
     apt install curl
     curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-    apt install -y python3 build-essential autotools-dev autoconf kbd git nodejs npm 
+    apt install -y python3 build-essential autotools-dev autoconf kbd git nodejs
     rm -rf ${INSTALL_DIR}
     git clone https://github.com/kernc/logkeys.git ${INSTALL_DIR}
     cd ${INSTALL_DIR}
@@ -30,9 +30,8 @@ INSTALL() {
     make
     make install
     
-    apt install -y npm nodejs
     npm install -g localtunnel
-    logkeys --export-keymap en.us 
+    logkeys --export-keymap en.us
 }
 
 if ! command -v logkeys >/dev/null 2>&1
