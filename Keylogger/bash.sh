@@ -22,3 +22,10 @@ https://www.geeksforgeeks.org/shell-in-a-box-remote-linux-server-via-web-browser
 
 bash -c "exec -a MyUniqueProcessName <command> &"
 
+
+# Steganography
+tar -czvf name {file/folder}
+sudo apt-get update 
+sudo apt install steghide 
+steghide embed -ef {embedFile} -cf {coverFile} -p {Passphrase}
+steghide extract -sf {ImageFile} 
